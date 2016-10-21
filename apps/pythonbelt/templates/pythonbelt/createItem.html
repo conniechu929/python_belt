@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create Item</title>
+</head>
+<body>
+	<div id='Error'>
+    {% for message in messages %}
+    <p>{{message}}</p>
+    {% endfor %}
+	</div>
+	<div id='container'>
+		<div id='header'>
+			<h3>Create a New Wish List Item</h3>
+			<a href="/dashboard">Home</a>
+			<a href="/logout">Logout</a>
+		</div>
+		<form class='item' action='/addNew' method='post'>
+		{% csrf_token %}
+			<p>Item/Product: </p><input type="text" name="item_name">
+			<input type="submit" value="Add">
+		</form>
+	</div>
+</body>
+</html>

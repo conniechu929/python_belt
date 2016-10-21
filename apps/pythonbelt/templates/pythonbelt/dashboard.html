@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Wish List</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'pythonbelt/pythonbelt.css' %}" media="screen" title="no title"  charset="utf-8">
+</head>
+<body>
+	<div id='container'>
+		<div id='header'>
+			<h3>Welcome, {{ request.session.name }}!</h3>
+			<a href="/logout">Logout</a>
+		</div>
+		<div id='top'>
+			<h4><b>Your Wish List:</b></h4>
+			<table>
+				<thead>
+					<tr>
+						<th>Item</th>
+						<th>Added_by</th>
+						<th>Date Added</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in items %}
+					<tr>
+						<td><a href="item/{{item.id}}">{{ item.item_name }}</a></td>
+						{% for name in users %}
+							<td>{{name.name}}<td>
+						{% endfor %}
+						<td>{{ item.created_at }}</td>
+						<td><form action='item/remove/{{ item.id }}' method='post'>
+							{% csrf_token %}
+							<input type="submit" value="Remove from list">
+						</form></td>
+					</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<br>
+		<div id='bottom'>
+			<h4><b>Other Users' Wish List:</b></h4>
+			<table>
+				<thead>
+					<tr>
+						<th>Item</th>
+						<th>Added_by</th>
+						<th>Date Added</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in items %}
+					<tr>
+						<td>{{ item.item_name }}</td>
+						{% for name in users %}
+							<td>{{name.name}}</td>
+						{% endfor %}
+						<td>{{ item.created_at }}</td>
+						<td><form action='item/remove/{{ item.id }}' method='post'>
+							{% csrf_token %}
+							<input type="submit" value="delete">
+						</form></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div id='additem'>
+			<form class='add' action='/additem' method='post'>
+			{% csrf_token %}
+				<input type="submit" value="Add Item">
+			</form>
+		</div>
+	</div>
+</body>
+</html>
